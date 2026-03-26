@@ -23,37 +23,57 @@ for option_text in menu_options:
 option = input()
 
 
-# This function converts temperature from Fahrenheit to Celsius
-# It takes one numerical value and returns the converted result
+# This function converts temperature from Fahrenheit to Celsius.
 def convertData(value):
     return (value - 32) * 5 / 9
 
 
-# This function handles user input and processes multiple entries
+# This function inserts a comma-separated string into the csv file.
+def insertData(file_path, data):
+    try:
+        with open(file_path, "a") as file:
+            file.write(data + "\n")
+    except:
+        print("Error: unable to write to file")
+
+
+# This function reads and displays the contents of the csv file.
+def viewData(file_path):
+    try:
+        with open(file_path, "r") as file:
+            print("The file C:\\Users\\student\\ZooData.csv")
+            print(file.read(), end="")
+    except:
+        print("Error: unable to read file")
+
+
+# This function handles user input and stores entries in the csv file.
 def getInput():
-    # Ask how many entries the user wants to input
     entries = int(input("How many entries are you inputting?\n"))
 
-    # Loop through the number of entries
     for i in range(entries):
-        # Get the date from the user
         date = input("Enter a date:\n")
-
-        # Get the temperature value from the user
         temp = float(input("Enter the highest temp for the inputted date:\n"))
 
         # convertData requires one numerical argument and returns the converted value.
         converted_value = convertData(temp)
 
-        # Print the saved data with timestamp
-        print("The following was saved at " + str(datetime.now()) + " :")
-        print(str(date) + "," + str(temp) + "," + str(converted_value))
+        data = str(date) + "," + str(temp) + "," + str(converted_value)
+
+        try:
+            insertData("ZooData.csv", data)
+            print("The following data was saved at " + str(datetime.now()))
+            print(data)
+        except:
+            print("Error: unable to save data")
 
 
-# Check if the user selected option 1
+# Check the user menu choice and run the correct function.
 if option == "1":
     print("You selected " + option + " at " + str(datetime.now()))
     getInput()
+elif option == "2":
+    print("You selected " + option + " at " + str(datetime.now()))
+    viewData("ZooData.csv")
 else:
-    # If anything other than 1 is selected
     print("Error: The chosen functionality is not implemented yet")
